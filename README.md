@@ -94,8 +94,9 @@ $originalJson = $serializer->serializer($personInstance);
 This library throws exceptions on error. The possible errors during de-serialization are:
 
 * `Poles\Json\Exceptions\MalformedJsonException`: The input subject is not a valid JSON string.
-* `Poles\Json\Exceptions\MissingPropertyException`: The JSON object is missing a property defined by the class.
-* `Poles\Json\Exceptions\TypeMismatchException`: A JSON value does not match the expected type of a property.
+* `Poles\Json\Exceptions\TypeMismatchException`: A JSON value does not match the expected type or shape of a property.
+* `Poles\Json\Exceptions\UnsupportedTypeException`: A PHP property is annotated with an unsupported type (see supported types below).
+* `Poles\Json\Exceptions\UnresolvableClass`: A PHP property is annotated with a class name, but the class does not exist.
 
 ## Supported type annotations
 

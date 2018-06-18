@@ -5,8 +5,8 @@ namespace Poles\Json;
 use function json_decode;
 use function json_last_error;
 use function json_last_error_msg;
-use Poles\Http\Exceptions\JsonTypeMismatchException;
-use Poles\Http\Exceptions\MalformedJsonException;
+use Poles\Json\Exceptions\MalformedJsonException;
+use Poles\Json\Exceptions\TypeMismatchException;
 use Poles\Json\Types\Type;
 
 class Deserializer
@@ -27,7 +27,7 @@ class Deserializer
             throw new MalformedJsonException(json_last_error_msg());
         }
         if (!$this->rootType->check($decoded)) {
-            throw new JsonTypeMismatchException();
+            throw new TypeMismatchException();
         }
         return $this->rootType->coerce($decoded);
     }

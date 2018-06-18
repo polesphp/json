@@ -7,6 +7,8 @@ namespace Poles\Json;
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\ContextFactory;
+use Poles\Json\Exceptions\UnresolvableClassException;
+use Poles\Json\Exceptions\UnsupportedTypeException;
 use Poles\Json\Types\ArrayType;
 use Poles\Json\Types\BooleanType;
 use Poles\Json\Types\EnumType;
@@ -96,14 +98,25 @@ class SchemaReflector
                 return new ArrayType(new MixedType());
             case 'mixed':
                 return new MixedType();
+            case 'callable':
+            case 'true':
+            case 'false':
+            case 'object':
+            case 'resource':
+            case 'self':
+            case 'static':
+            case '$this':
+            case 'void':
+                throw new UnsupportedTypeException("phpDocumentor type {$typeStr} is not supported!");
             default:
                 $resolver = new FqsenResolver();
                 $resolvedFqsen = (string)$resolver->resolve($typeStr, $this->context);
                 if (class_exists($resolvedFqsen)) {
                     $subScanner = new SchemaReflector($resolvedFqsen);
                     return new ObjectType($subScanner->reflect());
+                } else {
+                    throw new UnresolvableClassException("Class {$typeStr} does not exist!");
                 }
         }
-        return new MixedType();
     }
 }

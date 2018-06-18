@@ -2,6 +2,7 @@
 
 namespace Poles\Json\Types;
 
+use function array_key_exists;
 use Poles\Json\Schema;
 use ReflectionClass;
 
@@ -22,7 +23,7 @@ class ObjectType implements Type
         }
         $decodedVars = get_object_vars($value);
         foreach ($this->schema->getProperties() as $name => $type) {
-            if (!isset($decodedVars[$name])) {
+            if (!array_key_exists($name, $decodedVars)) {
                 return false;
             }
             if (!$type->check($decodedVars[$name])) {

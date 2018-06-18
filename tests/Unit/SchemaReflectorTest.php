@@ -4,6 +4,16 @@ namespace Poles\Json\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Poles\Json\Schema;
+use Poles\Json\SchemaReflector;
+use Poles\Json\Tests\Support\CallableClass;
+use Poles\Json\Tests\Support\FalseClass;
+use Poles\Json\Tests\Support\ObjectClass;
+use Poles\Json\Tests\Support\ResourceClass;
+use Poles\Json\Tests\Support\SelfClass;
+use Poles\Json\Tests\Support\StaticClass;
+use Poles\Json\Tests\Support\ThisClass;
+use Poles\Json\Tests\Support\TrueClass;
+use Poles\Json\Tests\Support\VoidClass;
 use Poles\Json\Types\ArrayType;
 use Poles\Json\Types\BooleanType;
 use Poles\Json\Types\EnumType;
@@ -25,15 +35,16 @@ use Poles\Json\Tests\Support\NullClass;
 use Poles\Json\Tests\Support\StringClass;
 use Poles\Json\Tests\Support\TypedArrayClass;
 use Poles\Json\Tests\Support\UntypedClass;
+use Poles\Json\Types\UnresolvableClass;
 
-class SchemaTest extends TestCase
+class SchemaReflectorTest extends TestCase
 {
     /**
      * @dataProvider getInferData
      */
     public function testInferTyped($class, $expectedSchema)
     {
-        $this->assertEquals($expectedSchema, Schema::infer($class));
+        $this->assertEquals($expectedSchema, (new SchemaReflector($class))->reflect());
     }
 
     public function getInferData()
@@ -134,5 +145,37 @@ class SchemaTest extends TestCase
                 ])
             ]
         ];
+    }
+
+    /**
+     * @expectedException \Poles\Json\Exceptions\UnsupportedTypeException
+     * @dataProvider getUnsupportedTypeData
+     */
+    public function testUnsupportedType($unsupportedClass)
+    {
+        (new SchemaReflector($unsupportedClass))->reflect();
+    }
+
+    public function getUnsupportedTypeData()
+    {
+        return [
+            [CallableClass::class],
+            [TrueClass::class],
+            [FalseClass::class],
+            [ObjectClass::class],
+            [ResourceClass::class],
+            [SelfClass::class],
+            [StaticClass::class],
+            [ThisClass::class],
+            [VoidClass::class],
+        ];
+    }
+
+    /**
+     * @expectedException \Poles\Json\Exceptions\UnresolvableClassException
+     */
+    public function testUnresolvableClass()
+    {
+        (new SchemaReflector(UnresolvableClass::class))->reflect();
     }
 }
