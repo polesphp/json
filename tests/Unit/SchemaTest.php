@@ -9,6 +9,7 @@ use Poles\Json\Types\BooleanType;
 use Poles\Json\Types\EnumType;
 use Poles\Json\Types\FloatType;
 use Poles\Json\Types\IntegerType;
+use Poles\Json\Types\MixedType;
 use Poles\Json\Types\NullType;
 use Poles\Json\Types\ObjectType;
 use Poles\Json\Types\StringType;
@@ -45,13 +46,13 @@ class SchemaTest extends TestCase
             [
                 UntypedClass::class,
                 new Schema(UntypedClass::class, [
-                    'prop' => null
+                    'prop' => new MixedType()
                 ])
             ],
             [
                 MixedClass::class,
                 new Schema(MixedClass::class, [
-                    'prop' => null
+                    'prop' => new MixedType()
                 ])
             ],
             [
@@ -89,8 +90,8 @@ class SchemaTest extends TestCase
             [
                 MixedArrayClass::class,
                 new Schema(MixedArrayClass::class, [
-                    'prop1' => new ArrayType(),
-                    'prop2' => new ArrayType()
+                    'prop1' => new ArrayType(new MixedType()),
+                    'prop2' => new ArrayType(new MixedType())
                 ])
             ],
             [
@@ -101,7 +102,7 @@ class SchemaTest extends TestCase
                     'booleans' => new ArrayType(new BooleanType()),
                     'bools' => new ArrayType(new BooleanType()),
                     'strings' => new ArrayType(new StringType()),
-                    'arrays' => new ArrayType(new ArrayType()),
+                    'arrays' => new ArrayType(new ArrayType(new MixedType())),
                     'arraysOfInts' => new ArrayType(new ArrayType(new IntegerType()))
                 ])
             ],
@@ -115,7 +116,7 @@ class SchemaTest extends TestCase
                             'booleans' => new ArrayType(new BooleanType()),
                             'bools' => new ArrayType(new BooleanType()),
                             'strings' => new ArrayType(new StringType()),
-                            'arrays' => new ArrayType(new ArrayType()),
+                            'arrays' => new ArrayType(new ArrayType(new MixedType())),
                             'arraysOfInts' => new ArrayType(new ArrayType(new IntegerType()))
                         ])
                     )

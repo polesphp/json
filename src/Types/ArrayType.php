@@ -4,10 +4,10 @@ namespace Poles\Json\Types;
 
 class ArrayType implements Type
 {
-    /** @var null|Type */
+    /** @var Type */
     private $elementType;
 
-    public function __construct(?Type $elementType = null)
+    public function __construct(Type $elementType)
     {
         $this->elementType = $elementType;
     }
@@ -17,11 +17,9 @@ class ArrayType implements Type
         if (!is_array($value)) {
             return false;
         }
-        if ($this->elementType) {
-            for ($i=0, $c = count($value); $i < $c; $i++) {
-                if (!$this->elementType->check($value[$i])) {
-                    return false;
-                }
+        for ($i = 0, $c = count($value); $i < $c; $i++) {
+            if (!$this->elementType->check($value[$i])) {
+                return false;
             }
         }
         return true;
@@ -29,9 +27,6 @@ class ArrayType implements Type
 
     public function coerce($value): array
     {
-        if ($this->elementType) {
-            return array_map([$this->elementType, 'coerce'], (array)$value);
-        }
-        return (array)$value;
+        return array_map([$this->elementType, 'coerce'], (array)$value);
     }
 }

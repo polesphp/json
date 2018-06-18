@@ -12,6 +12,7 @@ use Poles\Json\Types\BooleanType;
 use Poles\Json\Types\EnumType;
 use Poles\Json\Types\FloatType;
 use Poles\Json\Types\IntegerType;
+use Poles\Json\Types\MixedType;
 use Poles\Json\Types\NullType;
 use Poles\Json\Types\ObjectType;
 use Poles\Json\Types\StringType;
@@ -45,11 +46,10 @@ class SchemaReflector
             $this->currentProperty = $property;
             $pname = $property->getName();
             $doc = $property->getDocComment();
-            $type = null;
-            if (!empty($doc)) {
-                if (preg_match('/@var\s+([^\s]+)/', $doc, $matches)) {
-                    $type = $this->reflectType($matches[1]);
-                }
+            if (!empty($doc) && preg_match('/@var\s+([^\s]+)/', $doc, $matches)) {
+                $type = $this->reflectType($matches[1]);
+            } else {
+                $type = new MixedType();
             }
             $properties[$pname] = $type;
         }
@@ -57,7 +57,7 @@ class SchemaReflector
         return $schema;
     }
 
-    private function reflectType(string $typeStr): ?Type
+    private function reflectType(string $typeStr): Type
     {
         $atomTypes = explode('|', $typeStr);
         if (count($atomTypes) > 1) {
@@ -66,7 +66,7 @@ class SchemaReflector
         return $this->reflectAtomType($typeStr);
     }
 
-    private function reflectAtomType(string $typeStr): ?Type
+    private function reflectAtomType(string $typeStr): Type
     {
         if (substr($typeStr, -2) === '[]') {
             $elemTypeStr = substr($typeStr, 0, strlen($typeStr) - 2);
@@ -76,41 +76,34 @@ class SchemaReflector
         return $this->reflectPrimitiveType($typeStr);
     }
 
-    private function reflectPrimitiveType(string $typeStr): ?Type
+    private function reflectPrimitiveType(string $typeStr): Type
     {
-        $type = null;
         switch ($typeStr) {
             case 'null':
-                $type = new NullType();
-                break;
+                return new NullType();
             case 'string':
-                $type = new StringType();
-                break;
+                return new StringType();
             case 'int':
             case 'integer':
-                $type = new IntegerType();
-                break;
+                return new IntegerType();
             case 'float':
-                $type = new FloatType();
-                break;
+                return new FloatType();
             case 'bool':
             case 'boolean':
-                $type = new BooleanType();
-                break;
+                return new BooleanType();
             case 'mixed[]':
             case 'array':
-                $type = new ArrayType();
-                break;
+                return new ArrayType(new MixedType());
             case 'mixed':
-                break;
+                return new MixedType();
             default:
                 $resolver = new FqsenResolver();
                 $resolvedFqsen = (string)$resolver->resolve($typeStr, $this->context);
                 if (class_exists($resolvedFqsen)) {
                     $subScanner = new SchemaReflector($resolvedFqsen);
-                    $type = new ObjectType($subScanner->reflect());
+                    return new ObjectType($subScanner->reflect());
                 }
         }
-        return $type;
+        return new MixedType();
     }
 }
