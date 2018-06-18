@@ -1,0 +1,28 @@
+{
+    "name": "poles/json",
+    "description": "Type-safe, class-oriented JSON (de)serialization library.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Philippe Milot",
+            "email": "pmilot@turbulent.ca"
+        }
+    ],
+    "require": {
+        "php": ">=7.2.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Poles\\Json\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Poles\\Json\\Tests\\": "tests/"
+        }
+    }
+}
