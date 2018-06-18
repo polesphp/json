@@ -75,6 +75,7 @@ $subject = <<<JSON
       "city": "Montreal",
       "country": "Canada",
       "postalCode": "H2K1L3"
+    }
   ]
 }
 JSON;
