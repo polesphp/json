@@ -24,7 +24,7 @@ class TypeDeserializer implements Deserializer
         $decoded = json_decode($json);
         $err = json_last_error();
         if (JSON_ERROR_NONE !== $err) {
-            throw new MalformedJsonException(json_last_error_msg());
+            throw new MalformedJsonException(json_last_error_msg(), $err);
         }
         if (!$this->rootType->check($decoded)) {
             throw new TypeMismatchException();

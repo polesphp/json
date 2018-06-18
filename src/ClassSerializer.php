@@ -4,6 +4,7 @@ namespace Poles\Json;
 
 use function is_a;
 use function json_encode;
+use function json_last_error;
 use function json_last_error_msg;
 use Poles\Json\Exceptions\SerializationException;
 use Poles\Json\Exceptions\TypeMismatchException;
@@ -32,8 +33,9 @@ class ClassSerializer implements Serializer
             throw new TypeMismatchException();
         }
         $result = json_encode($object, $this->options, $this->depth);
-        if ($result === false) {
-            throw new SerializationException(json_last_error_msg());
+        $err = json_last_error();
+        if (JSON_ERROR_NONE !== $err) {
+            throw new SerializationException(json_last_error_msg(), $err);
         }
         return $result;
     }
