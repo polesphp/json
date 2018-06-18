@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Poles\Json;
-
 
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\Context;

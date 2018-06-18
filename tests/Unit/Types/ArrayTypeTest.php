@@ -35,7 +35,7 @@ class ArrayTypeTest extends TestCase
     /**
      * @dataProvider getTestCoerceData
      */
-    public function testCoerce($elemType ,$input, $expected)
+    public function testCoerce($elemType, $input, $expected)
     {
         $this->assertEquals($expected, (new ArrayType($elemType))->coerce($input));
     }

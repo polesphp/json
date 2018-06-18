@@ -36,7 +36,7 @@ class ObjectTypeTest extends TestCase
     /**
      * @dataProvider getTestCoerceData
      */
-    public function testCoerce($schema ,$input, $expected)
+    public function testCoerce($schema, $input, $expected)
     {
         $this->assertEquals($expected, (new ObjectType($schema))->coerce($input));
     }

@@ -50,5 +50,4 @@ class BooleanTypeTest extends TestCase
             ['0', false]
         ];
     }
-
 }
