@@ -31,7 +31,7 @@ JSON;
     }
 
     /**
-     * @expectedException \Poles\Json\Exceptions\SerializationException
+     * @expectedException \Poles\Json\Exceptions\EncodeException
      * @expectedExceptionMessage Maximum stack depth exceeded
      */
     public function testSerializeWithMaxDepth()

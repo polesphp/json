@@ -10,7 +10,7 @@ use Poles\Json\Types\IntegerType;
 class TypeDeserializerTest extends TestCase
 {
     /**
-     * @expectedException \Poles\Json\Exceptions\MalformedJsonException
+     * @expectedException \Poles\Json\Exceptions\DecodeException
      */
     public function testThrowsOnMalformedJson()
     {
