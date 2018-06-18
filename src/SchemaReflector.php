@@ -5,6 +5,7 @@ namespace Poles\Json;
 
 
 use phpDocumentor\Reflection\FqsenResolver;
+use phpDocumentor\Reflection\Types\Context;
 use phpDocumentor\Reflection\Types\ContextFactory;
 use Poles\Json\Types\ArrayType;
 use Poles\Json\Types\BooleanType;
@@ -26,6 +27,9 @@ class SchemaReflector
     /** @var ReflectionProperty */
     private $currentProperty;
 
+    /** @var Context */
+    private $context;
+
     public function __construct(string $className)
     {
         $this->className = $className;
@@ -34,6 +38,8 @@ class SchemaReflector
     public function reflect(): Schema
     {
         $refClass = new ReflectionClass($this->className);
+        $contextFactory = new ContextFactory();
+        $this->context = $contextFactory->createFromReflector($refClass);
         $properties = [];
         foreach ($refClass->getProperties() as $property) {
             $this->currentProperty = $property;
@@ -98,10 +104,8 @@ class SchemaReflector
             case 'mixed':
                 break;
             default:
-                $contextFactory = new ContextFactory();
-                $context = $contextFactory->createFromReflector($this->currentProperty);
                 $resolver = new FqsenResolver();
-                $resolvedFqsen = (string)$resolver->resolve($typeStr, $context);
+                $resolvedFqsen = (string)$resolver->resolve($typeStr, $this->context);
                 if (class_exists($resolvedFqsen)) {
                     $subScanner = new SchemaReflector($resolvedFqsen);
                     $type = new ObjectType($subScanner->reflect());
