@@ -2,9 +2,9 @@
 
 namespace Poles\Json\Types;
 
-use function array_key_exists;
-use Poles\Json\Schema;
+use Poles\Json\Schema\Schema;
 use ReflectionClass;
+use function array_key_exists;
 
 class ObjectType implements Type
 {

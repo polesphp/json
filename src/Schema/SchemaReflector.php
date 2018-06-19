@@ -1,6 +1,6 @@
 <?php
 
-namespace Poles\Json;
+namespace Poles\Json\Schema;
 
 use phpDocumentor\Reflection\FqsenResolver;
 use phpDocumentor\Reflection\Types\Context;

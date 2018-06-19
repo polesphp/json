@@ -117,7 +117,8 @@ The [phpDocumentor](https://docs.phpdoc.org/guides/types.html) type annotations 
 
 Here is an informal list of future improvements for this library:
 
+* Class metadata caching.
+* Looser, "coerse" mode that only throws if a type cannot be co-erced into the expected type.
 * Define name re-mapping logic, e.g. (`public $dateOfBirth` becomes JSON property `date_of_birth`)
 * Have a nice DSL to explicitely define a JSON schema without inferring via Reflection.
-* Class metadata caching.
 

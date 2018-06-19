@@ -1,6 +1,6 @@
 <?php
 
-namespace Poles\Json;
+namespace Poles\Json\Schema;
 
 use Poles\Json\Types\Type;
 

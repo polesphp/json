@@ -3,9 +3,9 @@
 namespace Poles\Json\Tests\Unit\Types;
 
 use PHPUnit\Framework\TestCase;
-use Poles\Json\Schema;
-use Poles\Json\Types\ObjectType;
+use Poles\Json\Schema\Schema;
 use Poles\Json\Tests\Support\IntegerClass;
+use Poles\Json\Types\ObjectType;
 
 class ObjectTypeTest extends TestCase
 {

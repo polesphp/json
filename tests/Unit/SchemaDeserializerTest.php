@@ -3,7 +3,7 @@
 namespace Poles\Json\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
-use Poles\Json\Schema;
+use Poles\Json\Schema\Schema;
 use Poles\Json\SchemaDeserializer;
 use Poles\Json\Tests\Support\EmptyClass;
 use Poles\Json\Tests\Support\StringClass;
