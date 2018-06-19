@@ -15,14 +15,18 @@ class TypeSerializer implements Serializer
     /** @var Type */
     private $rootType;
 
-    public function __construct(Type $rootType)
+    /** @var SerializerConfig */
+    private $config;
+
+    public function __construct(Type $rootType, SerializerConfig $config)
     {
         $this->rootType = $rootType;
+        $this->config = $config;
     }
 
-    public function serialize($value, int $options = 0, int $depth = 512): string
+    public function serialize($value): string
     {
-        $result = json_encode($value, $options, $depth);
+        $result = json_encode($value, $this->config->getOptions(), $this->config->getMaxDepth());
         $err = json_last_error();
         if (JSON_ERROR_NONE !== $err) {
             throw new EncodeException(json_last_error_msg(), $err);

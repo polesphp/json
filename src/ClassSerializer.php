@@ -10,17 +10,17 @@ class ClassSerializer extends SchemaSerializer
     /** @var string */
     private $className;
 
-    public function __construct(string $className)
+    public function __construct(string $className, SerializerConfig $config)
     {
         $this->className = $className;
-        parent::__construct(Schema::infer($className));
+        parent::__construct(Schema::infer($className), $config);
     }
 
-    public function serialize($value, int $options = 0, int $depth = 512): string
+    public function serialize($value): string
     {
         if (!is_a($value, $this->className)) {
             throw new TypeMismatchException();
         }
-        return parent::serialize($value, $options, $depth);
+        return parent::serialize($value);
     }
 }

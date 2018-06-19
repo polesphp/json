@@ -5,6 +5,7 @@ namespace Poles\Json\Tests\Unit;
 use PHPUnit\Framework\TestCase;
 use Poles\Json\Schema\Schema;
 use Poles\Json\SchemaSerializer;
+use Poles\Json\SerializerConfig;
 use Poles\Json\Tests\Support\EmptyClass;
 use Poles\Json\Tests\Support\StringClass;
 
@@ -16,7 +17,8 @@ class SchemaSerializerTest extends TestCase
      */
     public function testThrowsOnNonObjects($input)
     {
-        (new SchemaSerializer(new Schema(EmptyClass::class, [])))->deserialize(json_encode($input));
+        (new SchemaSerializer(new Schema(EmptyClass::class, []), new SerializerConfig()))
+            ->deserialize(json_encode($input));
     }
 
     public function getThrowsOnNonObjectsData()
@@ -35,7 +37,8 @@ class SchemaSerializerTest extends TestCase
     {
         $expected = new StringClass();
         $expected->prop = 'abc';
-        $results = (new SchemaSerializer(Schema::infer(StringClass::class)))->deserialize('{"prop": "abc"}');
+        $results = (new SchemaSerializer(Schema::infer(StringClass::class), new SerializerConfig()))
+            ->deserialize('{"prop": "abc"}');
         $this->assertEquals($expected, $results);
     }
 }
