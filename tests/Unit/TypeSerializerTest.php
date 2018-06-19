@@ -4,17 +4,17 @@ namespace Poles\Json\Tests\Unit;
 
 use PHPUnit\Framework\TestCase;
 use Poles\Json\Exceptions\TypeMismatchException;
-use Poles\Json\TypeDeserializer;
+use Poles\Json\TypeSerializer;
 use Poles\Json\Types\IntegerType;
 
-class TypeDeserializerTest extends TestCase
+class TypeSerializerTest extends TestCase
 {
     /**
      * @expectedException \Poles\Json\Exceptions\DecodeException
      */
     public function testThrowsOnMalformedJson()
     {
-        (new TypeDeserializer(new IntegerType()))->deserialize('{');
+        (new TypeSerializer(new IntegerType()))->deserialize('{');
     }
 
     /**
@@ -22,12 +22,12 @@ class TypeDeserializerTest extends TestCase
      */
     public function testThrowsOnTypeMismatch()
     {
-        (new TypeDeserializer(new IntegerType()))->deserialize('{}');
+        (new TypeSerializer(new IntegerType()))->deserialize('{}');
     }
 
     public function testReturnsResultOfCoerce()
     {
-        $res = (new TypeDeserializer(new IntegerType()))->deserialize(json_encode(42));
+        $res = (new TypeSerializer(new IntegerType()))->deserialize(json_encode(42));
         $this->assertSame(42, $res);
     }
 }

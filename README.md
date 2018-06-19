@@ -61,7 +61,6 @@ Once your structure is properly defined, you can easily convert it to and from J
 ```
 
 use Poles\Json\ClassSerializer;
-use Poles\Json\ClassDeserializer;
 
 $subject = <<<JSON
 {
@@ -80,13 +79,13 @@ $subject = <<<JSON
 }
 JSON;
 
+$serializer = new ClassSerializer(Person::class);
+
 // ----- De-serialization -------
-$deserializer = new ClassDeserializer(Person::class);
-$personInstance = $deserializer->deserialize($subject);
+$personInstance = $serializer->deserialize($subject);
 
 // ----- Serialization -----
-$serializer = new ClassSerializer(Person::class);
-$originalJson = $serializer->serializer($personInstance);
+$originalJson = $serializer->serialize($personInstance);
 ```
 
 ## Errors

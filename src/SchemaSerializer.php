@@ -5,7 +5,7 @@ namespace Poles\Json;
 use Poles\Json\Schema\Schema;
 use Poles\Json\Types\ObjectType;
 
-class SchemaDeserializer extends TypeDeserializer
+class SchemaSerializer extends TypeSerializer
 {
     public function __construct(Schema $schema)
     {

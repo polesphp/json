@@ -13,6 +13,14 @@ use Poles\Json\Tests\Support\TypedArrayClass;
 
 class ClassSerializerTest extends TestCase
 {
+    public function testInfersSchemaFromClassName()
+    {
+        $expected = new StringClass();
+        $expected->prop = 'abc';
+        $deserializer = new ClassSerializer(StringClass::class);
+        $this->assertEquals($expected, $deserializer->deserialize('{"prop": "abc"}'));
+    }
+
     public function testSerializePlain()
     {
         $s = new ClassSerializer(MixedClass::class);
@@ -21,13 +29,13 @@ class ClassSerializerTest extends TestCase
 
     public function testSerializeWithOptions()
     {
-        $s = new ClassSerializer(MixedClass::class, JSON_PRETTY_PRINT);
+        $s = new ClassSerializer(MixedClass::class);
         $expected = <<<JSON
 {
     "prop": null
 }
 JSON;
-        $this->assertEquals($expected, $s->serialize(new MixedClass()));
+        $this->assertEquals($expected, $s->serialize(new MixedClass(), JSON_PRETTY_PRINT));
     }
 
     /**
@@ -36,11 +44,11 @@ JSON;
      */
     public function testSerializeWithMaxDepth()
     {
-        $s = new ClassSerializer(CompositeClass::class, 0, 2);
+        $s = new ClassSerializer(CompositeClass::class);
         $subject = new CompositeClass();
         $subject->prop = new TypedArrayClass();
         $subject->prop->strings = ['a', 'b', 'c'];
-        $s->serialize($subject);
+        $s->serialize($subject, 0, 2);
     }
 
     /**
