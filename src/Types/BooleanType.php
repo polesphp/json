@@ -13,4 +13,9 @@ class BooleanType implements Type
     {
         return (bool)$value;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }

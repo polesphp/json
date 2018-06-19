@@ -15,4 +15,9 @@ class FloatType implements Type
     {
         return (float)$value;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }

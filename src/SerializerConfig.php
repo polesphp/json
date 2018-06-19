@@ -10,10 +10,14 @@ class SerializerConfig
     /** @var int */
     private $maxDepth;
 
+    /** @var string|null */
+    private $cacheDirectory;
+
     public function __construct()
     {
         $this->options = 0;
         $this->maxDepth = 512;
+        $this->cacheDirectory = null;
     }
 
     public function getMaxDepth(): int
@@ -34,5 +38,15 @@ class SerializerConfig
     public function setOptions(int $options): void
     {
         $this->options = $options;
+    }
+
+    public function getCacheDirectory(): ?string
+    {
+        return $this->cacheDirectory;
+    }
+
+    public function setCacheDirectory(string $cacheDirectory): void
+    {
+        $this->cacheDirectory = $cacheDirectory;
     }
 }

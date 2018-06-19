@@ -18,11 +18,6 @@ class Schema
         $this->properties = $properties;
     }
 
-    public static function infer(string $className): Schema
-    {
-        return (new SchemaReflector($className))->reflect();
-    }
-
     public function getClassName(): string
     {
         return $this->className;
@@ -34,5 +29,10 @@ class Schema
     public function getProperties(): array
     {
         return $this->properties;
+    }
+
+    public static function __set_state($props)
+    {
+        return new static($props['className'], $props['properties']);
     }
 }

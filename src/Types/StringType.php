@@ -13,4 +13,9 @@ class StringType implements Type
     {
         return (string)$value;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }

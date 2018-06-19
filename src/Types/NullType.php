@@ -13,4 +13,9 @@ class NullType implements Type
     {
         return null;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }

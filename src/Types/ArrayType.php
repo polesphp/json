@@ -29,4 +29,9 @@ class ArrayType implements Type
     {
         return array_map([$this->elementType, 'coerce'], (array)$value);
     }
+
+    public static function __set_state($props)
+    {
+        return new static($props['elementType']);
+    }
 }

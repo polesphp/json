@@ -3,7 +3,10 @@
 namespace Poles\Json;
 
 use Poles\Json\Exceptions\TypeMismatchException;
+use Poles\Json\Schema\NullSchemaCache;
 use Poles\Json\Schema\Schema;
+use Poles\Json\Schema\SchemaCache;
+use Poles\Json\Schema\SchemaReflector;
 
 class ClassSerializer extends SchemaSerializer
 {
@@ -13,7 +16,8 @@ class ClassSerializer extends SchemaSerializer
     public function __construct(string $className, SerializerConfig $config)
     {
         $this->className = $className;
-        parent::__construct(Schema::infer($className), $config);
+        $schema = $this->getSchemaFromClassName($config);
+        parent::__construct($schema, $config);
     }
 
     public function serialize($value): string
@@ -22,5 +26,12 @@ class ClassSerializer extends SchemaSerializer
             throw new TypeMismatchException();
         }
         return parent::serialize($value);
+    }
+
+    private function getSchemaFromClassName(SerializerConfig $config): Schema
+    {
+        $cacheDir = $config->getCacheDirectory();
+        $cache = empty($cacheDir) ? new NullSchemaCache() : new SchemaCache($cacheDir);
+        return (new SchemaReflector($this->className, $cache))->reflect();
     }
 }

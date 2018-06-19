@@ -4,6 +4,7 @@ namespace Poles\Json\Tests\Unit\Schema;
 
 use PHPUnit\Framework\TestCase;
 use Poles\Json\Schema\Schema;
+use Poles\Json\Schema\SchemaCache;
 use Poles\Json\Schema\SchemaReflector;
 use Poles\Json\Tests\Support\BooleanClass;
 use Poles\Json\Tests\Support\CallableClass;
@@ -36,15 +37,24 @@ use Poles\Json\Types\NullType;
 use Poles\Json\Types\ObjectType;
 use Poles\Json\Types\StringType;
 use Poles\Json\Types\UnresolvableClass;
+use function sys_get_temp_dir;
 
 class SchemaReflectorTest extends TestCase
 {
+    /** @var SchemaCache */
+    private $cache;
+
+    public function setUp()
+    {
+        $this->cache = new SchemaCache(sys_get_temp_dir());
+    }
+
     /**
      * @dataProvider getInferData
      */
     public function testInferTyped($class, $expectedSchema)
     {
-        $this->assertEquals($expectedSchema, (new SchemaReflector($class))->reflect());
+        $this->assertEquals($expectedSchema, (new SchemaReflector($class, $this->cache))->reflect());
     }
 
     public function getInferData()
@@ -147,13 +157,22 @@ class SchemaReflectorTest extends TestCase
         ];
     }
 
+    public function testFetchFromCache()
+    {
+        $expectedSchema = new Schema(EmptyClass::class, []);
+        $this->cache->write(get_class($this), $expectedSchema);
+
+        $reflector = new SchemaReflector(get_class($this), $this->cache);
+        $this->assertEquals($expectedSchema, $reflector->reflect());
+    }
+
     /**
      * @expectedException \Poles\Json\Exceptions\UnsupportedTypeException
      * @dataProvider getUnsupportedTypeData
      */
     public function testUnsupportedType($unsupportedClass)
     {
-        (new SchemaReflector($unsupportedClass))->reflect();
+        (new SchemaReflector($unsupportedClass, $this->cache))->reflect();
     }
 
     public function getUnsupportedTypeData()
@@ -176,6 +195,6 @@ class SchemaReflectorTest extends TestCase
      */
     public function testUnresolvableClass()
     {
-        (new SchemaReflector(UnresolvableClass::class))->reflect();
+        (new SchemaReflector(UnresolvableClass::class, $this->cache))->reflect();
     }
 }

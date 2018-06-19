@@ -3,8 +3,8 @@
 namespace Poles\Json\Tests\Unit\Types;
 
 use PHPUnit\Framework\TestCase;
-use Poles\Json\Schema\Schema;
 use Poles\Json\Tests\Support\IntegerClass;
+use Poles\Json\Tests\Support\SchemaHelper;
 use Poles\Json\Types\ObjectType;
 
 class ObjectTypeTest extends TestCase
@@ -19,7 +19,7 @@ class ObjectTypeTest extends TestCase
 
     public function getTestCheckData()
     {
-        $integerSchema = Schema::infer(IntegerClass::class);
+        $integerSchema = SchemaHelper::infer(IntegerClass::class);
         return [
             [$integerSchema, '', false],
             [$integerSchema, 0, false],
@@ -43,7 +43,7 @@ class ObjectTypeTest extends TestCase
 
     public function getTestCoerceData()
     {
-        $integerSchema = Schema::infer(IntegerClass::class);
+        $integerSchema = SchemaHelper::infer(IntegerClass::class);
         $expected = new IntegerClass();
         $expected->prop1 = 1;
         $expected->prop2 = 2;

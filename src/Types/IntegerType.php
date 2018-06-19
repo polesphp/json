@@ -13,4 +13,9 @@ class IntegerType implements Type
     {
         return (int)$value;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }

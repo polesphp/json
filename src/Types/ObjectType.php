@@ -43,4 +43,9 @@ class ObjectType implements Type
         }
         return $result;
     }
+
+    public static function __set_state($props)
+    {
+        return new static($props['schema']);
+    }
 }

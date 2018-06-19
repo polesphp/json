@@ -7,6 +7,7 @@ use Poles\Json\Schema\Schema;
 use Poles\Json\SchemaSerializer;
 use Poles\Json\SerializerConfig;
 use Poles\Json\Tests\Support\EmptyClass;
+use Poles\Json\Tests\Support\SchemaHelper;
 use Poles\Json\Tests\Support\StringClass;
 
 class SchemaSerializerTest extends TestCase
@@ -37,7 +38,7 @@ class SchemaSerializerTest extends TestCase
     {
         $expected = new StringClass();
         $expected->prop = 'abc';
-        $results = (new SchemaSerializer(Schema::infer(StringClass::class), new SerializerConfig()))
+        $results = (new SchemaSerializer(SchemaHelper::infer(StringClass::class), new SerializerConfig()))
             ->deserialize('{"prop": "abc"}');
         $this->assertEquals($expected, $results);
     }

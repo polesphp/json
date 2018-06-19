@@ -31,12 +31,26 @@ class SchemaReflector
     /** @var Context */
     private $context;
 
-    public function __construct(string $className)
+    /** @var SchemaCache */
+    private $cache;
+
+    public function __construct(string $className, SchemaCache $cache)
     {
         $this->className = $className;
+        $this->cache = $cache;
     }
 
     public function reflect(): Schema
+    {
+        $schema = $this->cache->load($this->className);
+        if (!$schema) {
+            $schema = $this->reflectWithoutCache();
+            $this->cache->write($this->className, $schema);
+        }
+        return $schema;
+    }
+
+    private function reflectWithoutCache(): Schema
     {
         $refClass = new ReflectionClass($this->className);
         $contextFactory = new ContextFactory();
@@ -110,7 +124,7 @@ class SchemaReflector
                 $resolver = new FqsenResolver();
                 $resolvedFqsen = (string)$resolver->resolve($typeStr, $this->context);
                 if (class_exists($resolvedFqsen)) {
-                    $subScanner = new SchemaReflector($resolvedFqsen);
+                    $subScanner = new SchemaReflector($resolvedFqsen, $this->cache);
                     return new ObjectType($subScanner->reflect());
                 } else {
                     throw new UnresolvableClassException("Class {$typeStr} does not exist!");

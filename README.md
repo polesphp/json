@@ -58,7 +58,8 @@ Note that type annotations are standard [phpDocumentor](https://phpdoc.org) tags
 
 Once your structure is properly defined, you can easily convert it to and from JSON like so:
 
-```
+```php
+<?php
 
 use Poles\Json\ClassSerializer;
 use Poles\Json\SerializerConfig;
@@ -113,11 +114,29 @@ The [phpDocumentor](https://docs.phpdoc.org/guides/types.html) type annotations 
 * Typed arrays such as `int[]`, `MyClass[]` (in this case, each element of the array is recursively type-checked)
 * Compound types such as `int|string|null`
 
+## Configuration
+
+Here's an example of more complex configuration for the serializer:
+
+```php
+<?php
+
+use Poles\Json\ClassSerializer;
+use Poles\Json\SerializerConfig;
+
+$config = new SerializerConfig();
+$config->setCacheDirectory(sys_get_temp_dir()); // Writeable cache directory for production environments
+$config->setMaxDepth(200); // Same as the "max depth" argument of json_encode
+$config->setOptions(JSON_PRETTY_PRINT); // Same as the "options" argument of json_encode
+
+$serializer = new ClassSerializer(MyClass::class, $config);
+
+```
+
 # Future work
 
 Here is an informal list of future improvements for this library:
 
-* Class metadata caching.
 * Looser, "coerse" mode that only throws if a type cannot be co-erced into the expected type.
 * Define name re-mapping logic, e.g. (`public $dateOfBirth` becomes JSON property `date_of_birth`)
 * Have a nice DSL to explicitely define a JSON schema without inferring via Reflection.

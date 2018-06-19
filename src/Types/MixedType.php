@@ -13,4 +13,9 @@ class MixedType implements Type
     {
         return $value;
     }
+
+    public static function __set_state($props)
+    {
+        return new static();
+    }
 }
