@@ -1,6 +1,6 @@
 <?php
 
-namespace Poles\Json\Types;
+namespace Poles\Json\Tests\Support;
 
 class UnresolvableClass
 {

@@ -25,6 +25,7 @@ use Poles\Json\Tests\Support\StringClass;
 use Poles\Json\Tests\Support\ThisClass;
 use Poles\Json\Tests\Support\TrueClass;
 use Poles\Json\Tests\Support\TypedArrayClass;
+use Poles\Json\Tests\Support\UnresolvableClass;
 use Poles\Json\Tests\Support\UntypedClass;
 use Poles\Json\Tests\Support\VoidClass;
 use Poles\Json\Types\ArrayType;
@@ -36,7 +37,6 @@ use Poles\Json\Types\MixedType;
 use Poles\Json\Types\NullType;
 use Poles\Json\Types\ObjectType;
 use Poles\Json\Types\StringType;
-use Poles\Json\Types\UnresolvableClass;
 use function sys_get_temp_dir;
 
 class SchemaReflectorTest extends TestCase
