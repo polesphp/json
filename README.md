@@ -141,3 +141,11 @@ Here is an informal list of future improvements for this library:
 * Define name re-mapping logic, e.g. (`public $dateOfBirth` becomes JSON property `date_of_birth`)
 * Have a nice DSL to explicitely define a JSON schema without inferring via Reflection.
 
+# License
+
+All work found under this repository is licensed under the [Apache License 2.0](LICENSE).
+
+# Contributing
+
+If you wish to contribute to this project, make sure to read the [Contribution Guidelines](CONTRIBUTING.md) first!
+
