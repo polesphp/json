@@ -19,7 +19,9 @@
 
 First, define a pure PHP data structure which represents your JSON schema:
 
-```
+```php
+<?php
+
 class Person
 {
   /** @var int */
