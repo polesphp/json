@@ -1,5 +1,5 @@
 {
-    "name": "poles/json",
+    "name": "polesphp/json",
     "description": "Type-safe, class-oriented JSON (de)serialization library.",
     "type": "library",
     "license": "Apache-2.0",
